@@ -119,16 +119,20 @@ async function fetchJobs() {
         const data = await response.json();
         
         if (data.success && data.data) {
-            const remoteJobs = data.data;
+            // Tag all incoming remote jobs as explicitly synced
+            const remoteJobs = data.data.map(j => ({ ...j, syncStatus: 'synced' }));
             const remoteIds = new Set(remoteJobs.map(j => j.id));
-            const unsyncedLocal = jobs.filter(j => !remoteIds.has(j.id));
+            
+            // Critical Fix: Only keep local jobs that were explicitly flagged as created 'offline'.
+            // This prevents records deleted remotely on Google Sheets from instantly resurrecting!
+            const unsyncedLocal = jobs.filter(j => !remoteIds.has(j.id) && j.syncStatus === 'offline');
             
             jobs = [...remoteJobs, ...unsyncedLocal];
             saveLocalJobs(); 
             renderJobs();
             
             if(unsyncedLocal.length > 0) {
-                 showToast(`You have ${unsyncedLocal.length} unsynced records. Click 'Sync Data' to push!`, 'error');
+                 showToast(`You have ${unsyncedLocal.length} offline records. Click 'Sync Data' to push!`, 'error');
             }
         } else {
             showToast('Failed to load from sheets. Using local cache.', 'error');
@@ -278,13 +282,16 @@ jobForm.addEventListener('submit', async (e) => {
         return;
     }
     
+    const existingJob = isEdit ? jobs.find(j => j.id === idInput) : null;
+    
     const jobData = {
         id: isEdit ? idInput : generateId(),
         company: companyInput,
         position: positionInput,
         status: document.getElementById('status').value,
         dateApplied: document.getElementById('dateApplied').value,
-        notes: document.getElementById('notes').value
+        notes: document.getElementById('notes').value,
+        syncStatus: existingJob ? existingJob.syncStatus : 'offline'
     };
 
     jobModal.classList.remove('active');
