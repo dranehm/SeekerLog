@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-briefcase"></i>
+                <span>Trackify</span>
+            </div>
+            <ul class="nav-links">
+                <li class="active"><i class="fa-solid fa-border-all"></i> Dashboard</li>
+                <li><i class="fa-solid fa-chart-line"></i> Analytics <span class="badge">Soon</span></li>
+                <li id="settings-btn"><i class="fa-solid fa-gear"></i> Settings</li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Layout -->
+        <main class="main-content">
+            <header class="top-nav">
+                <div class="search-bar">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Search applications...">
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button class="btn btn-outline" id="sync-btn">
+                        <i class="fa-solid fa-rotate"></i> Sync Data
+                    </button>
+                    <button class="btn btn-primary" id="add-job-btn">
+                        <i class="fa-solid fa-plus"></i> Add Record
+                    </button>
+                </div>
+            </header>
+
+            <div class="dashboard-header">
+                <div>
+                    <h1>My Applications</h1>
+                    <p>Track your job search journey</p>
+                </div>
+            </div>
+
+            <!-- Dashboard Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon applied-icon"><i class="fa-solid fa-paper-plane"></i></div>
+                    <div class="stat-details">
+                        <h3 id="stat-applied">0</h3>
+                        <p>Applied</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon interviewing-icon"><i class="fa-solid fa-comments"></i></div>
+                    <div class="stat-details">
+                        <h3 id="stat-interviewing">0</h3>
+                        <p>Interviewing</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon offer-icon"><i class="fa-solid fa-award"></i></div>
+                    <div class="stat-details">
+                        <h3 id="stat-offer">0</h3>
+                        <p>Offers</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon rejected-icon"><i class="fa-solid fa-ban"></i></div>
+                    <div class="stat-details">
+                        <h3 id="stat-rejected">0</h3>
+                        <p>Rejected</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Job Board / Kanban View -->
+            <div class="job-board" id="job-board">
+                <!-- Columns for different statuses -->
+                <div class="board-column">
+                    <h2 class="column-title">Applied <span class="count" id="count-applied">0</span></h2>
+                    <div class="column-content" id="list-applied">
+                        <!-- Cards go here -->
+                    </div>
+                </div>
+
+                <div class="board-column">
+                    <h2 class="column-title">Interviewing <span class="count" id="count-interviewing">0</span></h2>
+                    <div class="column-content" id="list-interviewing">
+                    </div>
+                </div>
+
+                <div class="board-column">
+                    <h2 class="column-title">Offer <span class="count" id="count-offer">0</span></h2>
+                    <div class="column-content" id="list-offer">
+                    </div>
+                </div>
+
+                <div class="board-column">
+                    <h2 class="column-title">Rejected <span class="count" id="count-rejected">0</span></h2>
+                    <div class="column-content" id="list-rejected">
+                    </div>
+                </div>
+            </div>
+
+            <div id="loading-spinner" class="loading-spinner">
+                <i class="fa-solid fa-circle-notch fa-spin"></i> Loading...
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Modal Form -->
+    <div class="modal" id="job-modal">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h2 id="modal-title">Add Job Application</h2>
+                <button class="close-btn" id="close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="job-form">
+                <input type="hidden" id="job-id">
+                <div class="form-group">
+                    <label for="company">Company Name</label>
+                    <input type="text" id="company" required placeholder="e.g. Google">
+                </div>
+                <div class="form-group">
+                    <label for="position">Position</label>
+                    <input type="text" id="position" required placeholder="e.g. Software Engineer">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" required>
+                            <option value="Applied">Applied</option>
+                            <option value="Interviewing">Interviewing</option>
+                            <option value="Offer">Offer</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dateApplied">Date Applied</label>
+                        <input type="date" id="dateApplied" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Notes/Links</label>
+                    <textarea id="notes" rows="3" placeholder="Add contact names or job description links here..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" id="cancel-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="save-btn">Save Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settings-modal">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="close-btn" id="close-settings"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="settings-body">
+                <div class="form-group">
+                    <label for="api-url">Google Apps Script Web App URL</label>
+                    <input type="text" id="api-url" placeholder="https://script.google.com/macros/s/.../exec">
+                    <p class="help-text">Enter the URL to your Google Apps Script backend to enable saving to Google Sheets. Leave blank to use local browser storage.</p>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="save-settings-btn">Save Settings</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
