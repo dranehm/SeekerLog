@@ -321,7 +321,12 @@ function handleEdit(id) {
     document.getElementById('company').value = job.company;
     document.getElementById('position').value = job.position;
     document.getElementById('status').value = job.status;
-    document.getElementById('dateApplied').value = job.dateApplied || '';
+    let safeDate = '';
+    if(job.dateApplied) {
+        const d = new Date(job.dateApplied);
+        if(!isNaN(d)) safeDate = d.toISOString().split('T')[0];
+    }
+    document.getElementById('dateApplied').value = safeDate;
     document.getElementById('notes').value = job.notes || '';
     
     configureAdvanceButton(job.status);
