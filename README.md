@@ -23,6 +23,7 @@ Follow these precise steps to connect your User Interface to your Google Sheet.
 
 <details>
 <summary>Click to View Code</summary>
+
 ```javascript
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
