@@ -7,14 +7,7 @@ Follow these precise steps to connect your User Interface to your Google Sheet.
 ## Phase 1: Database (Sheet) Setup
 1. Go to your Google Account and create a brand new, empty **Google Sheet**.
 2. Look at the tabs at the very bottom left. Rename the default `Sheet1` to exactly: **`jobs`** *(all lowercase)*.
-3. In Row 1 (the very top row), type in the following exact column headers from A to F:
-   - **A1:** `id`
-   - **B1:** `company`
-   - **C1:** `position`
-   - **D1:** `status`
-   - **E1:** `dateApplied`
-   - **F1:** `notes`
-4. Freeze the top row so you don't accidentally overwrite it (`View` -> `Freeze` -> `1 Row`).
+*(Note: You do not need to type in the table headers. Our intelligent Apps Script will inject them automatically on the first sync!)*
 
 ## Phase 2: Connecting the Backend API (Apps Script)
 1. At the top of your Google Sheet, click on **Extensions** -> **Apps Script**.
@@ -36,8 +29,7 @@ Follow these precise steps to connect your User Interface to your Google Sheet.
 
 ## Phase 4: Syncing the App
 1. Open up the JobTrackerApp Web UI in your browser (`index.html`).
-2. Click the **Gear icon** in the top right corner.
+2. Click the **Gear icon** in the top right corner (Settings).
 3. Paste your copied Google Apps Script Web App URL into the box.
 4. Hit Save!
-
-Your app is now securely syncing all data to your Google Spreadsheet in the cloud for free!
+5. Now, click the **Sync Data** button next to your Add Record button. The App will securely push your records up, and the table headers will physically appear in your blank spreadsheet!

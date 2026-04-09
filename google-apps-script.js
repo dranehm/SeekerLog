@@ -1,17 +1,8 @@
-// Google Apps Script Backend for Job Tracker
-// INSTRUCTIONS:
-// 1. Open your Google Sheet
-// 2. Go to Extensions > Apps Script
-// 3. Paste this entire code into Code.gs (replace any existing code)
-// 4. Click Deploy > New Deployment
-// 5. Select type: "Web App"
-// 6. Execute as: "Me", Who has access: "Anyone"
-// 7. Click Deploy, Authorize access, and copy the "Web app URL"
+// Google Apps Script Backend for SeekerLog
 
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   
-  // Set up header row if sheet is empty
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(["id", "company", "position", "status", "dateApplied", "notes", "timestamp"]);
   }
@@ -22,13 +13,8 @@ function doPost(e) {
     
     if (action === "create") {
       var newRow = [
-        data.id,
-        data.company,
-        data.position,
-        data.status,
-        data.dateApplied,
-        data.notes,
-        new Date().toISOString()
+        data.id, data.company, data.position, data.status,
+        data.dateApplied, data.notes, new Date().toISOString()
       ];
       sheet.appendRow(newRow);
       return ContentService.createTextOutput(JSON.stringify({ success: true }))
@@ -60,7 +46,7 @@ function doPost(e) {
         }
       }
     }
-    return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Not found or invalid action" }))
+    return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Not found" }))
       .setMimeType(ContentService.MimeType.JSON);
   } catch (error) {
     return ContentService.createTextOutput(JSON.stringify({ success: false, error: error.toString() }))
@@ -84,13 +70,8 @@ function doGet(e) {
     var row = values[i];
     if (row[0] === "") continue;
     result.push({
-      id: row[0],
-      company: row[1],
-      position: row[2],
-      status: row[3],
-      dateApplied: row[4],
-      notes: row[5],
-      timestamp: row[6]
+      id: row[0], company: row[1], position: row[2], status: row[3],
+      dateApplied: row[4], notes: row[5], timestamp: row[6]
     });
   }
   
@@ -98,7 +79,6 @@ function doGet(e) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-// Allows CORS pre-flight
 function doOptions(e) {
   return ContentService.createTextOutput("").setMimeType(ContentService.MimeType.TEXT);
 }
