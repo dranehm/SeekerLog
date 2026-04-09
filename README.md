@@ -1,6 +1,6 @@
-# JobTrackerApp - Google Sheets Database Setup
+# SeekerLog - Google Sheets Database Setup
 
-Welcome to the serverless version of JobTrackerApp! By using Google Sheets as our backend database combined with LocalStorage, you never have to pay for a backend server or manage SQL databases. 
+Welcome to the serverless version of SeekerLog! By using Google Sheets as our backend database combined with LocalStorage, you never have to pay for a backend server or manage SQL databases. 
 
 Follow these precise steps to connect your User Interface to your Google Sheet.
 
