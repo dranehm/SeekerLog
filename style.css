@@ -438,12 +438,12 @@ input:focus, select:focus, textarea:focus {
 
 .loading-spinner {
     display: none;
-    text-align: center;
-    padding: 2rem;
-    color: var(--text-muted);
-    font-weight: 500;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary);
+    font-weight: 600;
 }
-.loading-spinner.active { display: block; }
+.loading-spinner.active { display: flex; }
 
 /* Toast */
 #toast-container {

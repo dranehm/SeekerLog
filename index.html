@@ -34,6 +34,9 @@
                     <input type="text" id="search-input" placeholder="Search applications...">
                 </div>
                 <div style="display: flex; gap: 10px; align-items: center;">
+                    <div id="loading-spinner" class="loading-spinner">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i> <span style="font-size: 0.875rem;">Loading...</span>
+                    </div>
                     <button class="btn btn-outline" id="sync-btn">
                         <i class="fa-solid fa-rotate"></i> Sync Data
                     </button>
@@ -111,9 +114,6 @@
                 </div>
             </div>
 
-            <div id="loading-spinner" class="loading-spinner">
-                <i class="fa-solid fa-circle-notch fa-spin"></i> Loading...
-            </div>
         </main>
     </div>
 
