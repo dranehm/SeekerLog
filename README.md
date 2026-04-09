@@ -21,6 +21,8 @@ Follow these precise steps to connect your User Interface to your Google Sheet.
 2. You will see an editor with `function myFunction() { ... }`. Delete absolutely everything.
 3. Copy the entire code block below and paste it directly into the Google Apps Script editor.
 
+<details>
+<summary>Click to View Code</summary>
 ```javascript
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
@@ -94,6 +96,7 @@ function doOptions(e) {
   return ContentService.createTextOutput("").setMimeType(ContentService.MimeType.TEXT);
 }
 ```
+</details>
 
 4. Click the **Save** icon (the floppy disk).
 
