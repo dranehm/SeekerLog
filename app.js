@@ -225,10 +225,25 @@ jobForm.addEventListener('submit', async (e) => {
     const idInput = document.getElementById('job-id').value;
     const isEdit = !!idInput;
     
+    const companyInput = document.getElementById('company').value.trim();
+    const positionInput = document.getElementById('position').value.trim();
+    
+    // Duplicate Protection
+    const isDuplicate = jobs.some(j => 
+        j.id !== idInput && 
+        j.company.trim().toLowerCase() === companyInput.toLowerCase() && 
+        j.position.trim().toLowerCase() === positionInput.toLowerCase()
+    );
+
+    if (isDuplicate) {
+        showToast('Duplicate! Exact Company & Position already exists.', 'error');
+        return;
+    }
+    
     const jobData = {
         id: isEdit ? idInput : generateId(),
-        company: document.getElementById('company').value,
-        position: document.getElementById('position').value,
+        company: companyInput,
+        position: positionInput,
         status: document.getElementById('status').value,
         dateApplied: document.getElementById('dateApplied').value,
         notes: document.getElementById('notes').value
