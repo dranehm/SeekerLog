@@ -42,12 +42,50 @@ saveSettingsBtn.addEventListener('click', () => {
 const syncBtn = document.getElementById('sync-btn');
 if(syncBtn) syncBtn.addEventListener('click', manualSync);
 
+function configureAdvanceButton(statusStr) {
+    const advanceBtn = document.getElementById('advance-btn');
+    const cancelBtn = document.getElementById('cancel-modal');
+    if(!advanceBtn) return;
+
+    if (statusStr === 'Applied') {
+        advanceBtn.style.display = 'inline-flex';
+        advanceBtn.textContent = 'Advance -> Interviewing';
+        advanceBtn.style.color = '#f59e0b';
+        advanceBtn.style.borderColor = '#f59e0b';
+        advanceBtn.onclick = () => { 
+            document.getElementById('status').value = 'Interviewing'; 
+            configureAdvanceButton('Interviewing'); 
+        };
+        cancelBtn.style.display = 'none';
+    } else if (statusStr === 'Interviewing') {
+        advanceBtn.style.display = 'inline-flex';
+        advanceBtn.textContent = 'Advance -> Offer';
+        advanceBtn.style.color = '#10b981';
+        advanceBtn.style.borderColor = '#10b981';
+        advanceBtn.onclick = () => { 
+            document.getElementById('status').value = 'Offer'; 
+            configureAdvanceButton('Offer'); 
+        };
+        cancelBtn.style.display = 'none';
+    } else {
+        advanceBtn.style.display = 'none';
+        cancelBtn.style.display = '';
+    }
+}
+
+document.getElementById('status').addEventListener('change', (e) => {
+    configureAdvanceButton(e.target.value);
+});
+
 addBtn.addEventListener('click', () => {
     document.getElementById('modal-title').textContent = 'Add Job Application';
     jobForm.reset();
     document.getElementById('job-id').value = '';
     // Set Default date
     document.getElementById('dateApplied').value = new Date().toISOString().split('T')[0];
+    
+    configureAdvanceButton(''); // Hide advance buttons for new records
+    
     jobModal.classList.add('active');
 });
 
@@ -278,6 +316,8 @@ function handleEdit(id) {
     document.getElementById('status').value = job.status;
     document.getElementById('dateApplied').value = job.dateApplied || '';
     document.getElementById('notes').value = job.notes || '';
+    
+    configureAdvanceButton(job.status);
     
     jobModal.classList.add('active');
 }
