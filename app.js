@@ -220,7 +220,7 @@ async function manualSync() {
         const finalData = await finalResponse.json();
         
         if (finalData.success && finalData.data) {
-            jobs = finalData.data;
+            jobs = finalData.data.map(j => ({ ...j, syncStatus: 'synced' }));
             saveLocalJobs();
             renderJobs();
             showToast(`Sync complete! Successfully pushed ${pushedCount} offline records.`);
@@ -368,9 +368,13 @@ function renderJobs(filterText = '') {
             // Format nice date
             const dateStr = job.dateApplied ? new Date(job.dateApplied).toLocaleDateString() : '';
 
+            const syncIcon = job.syncStatus === 'synced' 
+                ? '<i class="fa-solid fa-cloud" title="Synced" style="color: #10b981; font-size: 0.7rem; margin-left: 6px;"></i>'
+                : '<i class="fa-solid fa-cloud-arrow-up" title="Local only" style="color: #6b7280; font-size: 0.7rem; margin-left: 6px;"></i>';
+
             card.innerHTML = `
                 <div class="card-header">
-                    <div class="job-company">${job.company}</div>
+                    <div class="job-company">${job.company} ${syncIcon}</div>
                     <div class="job-actions">
                         <button onclick="handleEdit('${job.id}')" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
                         <button onclick="handleDelete('${job.id}')" title="Delete"><i class="fa-solid fa-trash"></i></button>
